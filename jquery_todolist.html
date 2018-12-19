@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <title>Jquery TodoList</title>
+</head>
+<body>
+    <div>
+        <input id="input" type="text" />
+        <button id="btn">提交</button>
+        <ul id="ul"></ul>
+    </div>
+    
+    <script>
+        function Page() {
+
+        }
+
+        $.extend(Page.prototype, {
+            init: function() {
+                this.bindEvents()
+            },
+            bindEvents: function() {
+                var btn = $('#btn');
+                btn.on('click', $.proxy(this.handleBtnClick, this))
+            },
+            handleBtnClick: function() {
+                var inputElem = $('#input');
+                var inputValue = inputElem.val();
+                var ulElem = $('#ul');
+                ulElem.append('<li>' + inputValue + '</li>');
+                inputElem.val('');
+            }
+        })
+
+        var page = new Page();
+        page.init();
+    </script>
+</body>
+</html>
+
+<!-- 小记：前面使用mvp设计模式呈现类似todolist一段代码，m层并没突出，很大部分在操作dom，对于mvvm模式，vue就是viewmodel层，model层数据改变，
+对应view层相应改变，基于vue源码引用了es5的核心api的Object.defineProperty，同时也引入了虚拟dom，实现了vue这种架构体系 -->
