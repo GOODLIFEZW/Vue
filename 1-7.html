@@ -1,27 +1,29 @@
+<!-- Vue模板语法 -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
     <script src="./vue.js"></script>
+    <title>Vue模板语法</title>
 </head>
 <body>
     <div id="app">
-        <p>{{ content}}</p>
+        <!-- 指令,效果一样 -->
+        <div v-text="name"></div>
+        <div v-html="name"></div>
+        <!-- 插值表达式 -->
+        {{ text }}
     </div>
     <script>
-        var app = new Vue({
-            el: '#app',
+        var vm = new Vue({
+            el: "#app",
             data: {
-                content: 'hello world'
+                name: "<h1>Alan</h1>"
             }
         })
-
-        setTimeout(function() {
-            app.content = 'word'
-        }, 2000)
     </script>
 </body>
 </html>
