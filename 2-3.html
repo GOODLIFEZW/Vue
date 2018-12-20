@@ -1,0 +1,50 @@
+<!-- 列表渲染 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>列表渲染</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 每一个循环项最好带一个key,尽量唯一,不使用index,提高性能,还有这里推荐使用of -->
+        <!-- 改变数组内容页面跟着改变有3种办法.1改变数组的引用,2调用一些变异方法,例如push,pop,3使用Vue.set或者vm.$set -->
+        <div
+            v-for="item of list"
+            :key="item.id"
+        >
+            {{ item.text }}
+        </div>
+        <!-- 不止数组,对象也可以循环 -->
+        <!-- 改变对象内容有两种,1改变对象本身.2使用Vue.set或者vm.$set -->
+        <div
+            v-for="(info, key, index) of infos"
+        >
+            {{ info }} --- {{ key }} --- {{ index }}
+        </div>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                list: [{
+                    id: 1,
+                    text: "one"
+                }, {
+                    id: 2,
+                    text: "two"
+                }],
+                infos: {
+                    name: "Alan",
+                    age: 20,
+                    gender: "male"
+                }
+            }
+        })
+    </script>
+</body>
+</html>
