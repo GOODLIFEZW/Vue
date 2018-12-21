@@ -1,0 +1,42 @@
+<!-- 父组件像子组件传值 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>父组件像子组件传值</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <counter :count="0"></counter>
+        <counter :count="1"></counter>
+    </div>
+    <script>
+        // 子组件最好不要直接修改父组件传过来的值,可以定义一个副本比如number,防止别的组件相互引用出现错误
+        var counter = {
+            props: ['count'],
+            data: function() {
+                return {
+                    number: count
+                }
+            },
+            template: '<div @click="handleClick">{{ number }}</div>',
+            methods: {
+                handleClick: function() {
+                    this.number ++
+                }
+            }
+        } 
+
+        var vm = new Vue({
+            el: "#app",
+            component: {
+                counter: counter
+            }
+        })
+    </script>
+</body>
+</html>
