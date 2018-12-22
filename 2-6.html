@@ -1,0 +1,40 @@
+<!-- 组件的参数校验与非props特性 -->
+<!-- props特性：父传子接，子组件可直接引用属性。非props特性：父传子不接，也不能引用，但是属性会显示到标签里 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>组件的参数校验与非props特性</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <child content="string类型"></child>
+    </div>
+    <script>
+        Vue.component('child', {
+            props: {
+                content: [Number, String]
+            },
+            // props: {
+            //     content: {
+            //         type: String,
+            //         required: true,
+            //         default: '默认值',
+            //         validator: function(value) {
+            //             return (value.length > 6)
+            //         }
+            //     }
+            // }
+            template: '<div>{{ content }}</div>'
+        })
+
+        var vm = new Vue({
+            el: '#app'
+        })
+    </script>
+</body>
+</html>
