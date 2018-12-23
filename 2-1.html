@@ -1,4 +1,4 @@
-<!-- Vue中的样式绑定 -->
+<!-- TodoList -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,78 +6,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Vue中的样式绑定</title>
-    <script src="./vue.js"></script>
-    <style>
-        .active {
-            color: red;
-        }
-    </style>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <title>Jquery TodoList</title>
 </head>
 <body>
-    <!-- 第一种 -->
-    <div id="app"
-        @click="handleDivClick"
-        :class="{active: isActive}"
-    >
-        hello world
+    <div>
+        <input id="input" type="text" />
+        <button id="btn">提交</button>
+        <ul id="ul"></ul>
     </div>
+    
     <script>
-        var vm = new Vue({
-            el: "#app",
-            data: {
-                isActive: false
+        function Page() {
+
+        }
+
+        $.extend(Page.prototype, {
+            init: function() {
+                this.bindEvents()
             },
-            methods: {
-                handleDivClick: function() {
-                    this.isActive = !this.isActive
-                }
+            bindEvents: function() {
+                var btn = $('#btn');
+                btn.on('click', $.proxy(this.handleBtnClick, this))
+            },
+            handleBtnClick: function() {
+                var inputElem = $('#input');
+                var inputValue = inputElem.val();
+                var ulElem = $('#ul');
+                ulElem.append('<li>' + inputValue + '</li>');
+                inputElem.val('');
             }
         })
-    </script>
-    <!-- 数组的话就等于里面的内容 -->
-    <!-- 第二种 -->
-    <div id="app1"
-        @click="handleDivClick"
-        :class="[active, active1]"
-    >
-        hello world1
-    </div>
-    <script>
-        var vm = new Vue({
-            el: "#app1",
-            data: {
-                active: "",
-                active1: "active1"
-            },
-            methods: {
-                handleDivClick: function() {
-                    this.active = this.active === "active" ? "" : "active" 
-                }
-            }
-        })
-    </script>
-    <!-- 第三种 -->
-    <div id="app2"
-        :style="styleObj"
-        @click="handleDivClick"
-    >
-        hello world2
-    </div>
-    <script>
-        var vm = new Vue({
-            el: "#app2",
-            data: {
-                styleObj: {
-                    color: "black"
-                }
-            },
-            methods: {
-                handleDivClick: function() {
-                    this.styleObj.color = this.styleObj.color === "black" ? "red" : "black"
-                }
-            }
-        })
+
+        var page = new Page();
+        page.init();
     </script>
 </body>
 </html>
+
+<!-- 小记：前面使用mvp设计模式呈现类似todolist一段代码，m层并没突出，很大部分在操作dom，对于mvvm模式，vue就是viewmodel层，model层数据改变，
+对应view层相应改变，基于vue源码引用了es5的核心api的Object.defineProperty，同时也引入了虚拟dom，实现了vue这种架构体系 -->

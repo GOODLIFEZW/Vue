@@ -1,0 +1,43 @@
+<!-- 在Vue中使用插槽(通过插槽向子组件传递dom元素) -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>在Vue中使用插槽slot</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <child>
+            <p>Alan</p>
+        </child>
+        <!-- 具名插槽/多个插槽，需要name，也可以设置默认内容-->
+        <child1>
+            <div class="header" slot="header">header</div>>
+            <div class="footer" slot="footer">footer</div>
+        </child1>
+    </div>
+    <script>
+        Vue.component('child', {
+            template: `<div>
+                            <p>Bob</p>
+                            <slot></slot>
+                       </div>`
+        })
+
+        Vue.component('child1', {
+            template: `<div>
+                            <slot name="header"></slot>
+                            <div class="content">content</div>
+                            <slot name="footer"><slot>
+                       </div>`
+        })
+        var vm = new Vue({
+            el: '#root'
+        })
+    </script>
+</body>
+</html>

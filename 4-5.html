@@ -1,0 +1,49 @@
+<!-- 非父子组件间传值(Bus/总线/发布订阅模式/观察者模式) -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>非父子组件间传值</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <child content="Alan"></child>
+        <child content="Bob"></child>
+    </div>
+    <script>
+        // 在生成Vue实例前，给Vue的原型上添加一个bus属性，这个属性是Vue的实例，之后创建的Vue实例都有这个属性
+        Vue.prototype.bus = new Vue()
+
+        Vue.component('child', {
+            props: {
+                content: String
+            },
+            data: function() {
+                return {
+                    cont: this.content
+                }
+            },
+            template: '<div @click="handleClick">{{ cont }}</div>',
+            methods: {
+                handleClick: function() {
+                    this.bus.$emit('change', this.cont)  //触发事件change
+                }
+            },
+            mounted: function() { 
+                var this_ = this  // 下面this作用域发生变化
+                this.bus.$on('change', function(msg) {  // 通过$on监听
+                    this_.cont = msg
+                })
+            }
+        })
+
+        var vm = new Vue({
+            el: '#root'
+        })
+    </script>
+</body>
+</html>

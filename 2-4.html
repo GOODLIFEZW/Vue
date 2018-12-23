@@ -1,88 +1,56 @@
-<!-- 组件使用中的细节点 -->
-
+<!-- 简单的组件间传值 -->
+<!-- 不要直接操作dom,通过改变数据进而改变dom -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>组件使用中的细节点</title>
     <script src="./vue.js"></script>
+    <title>todolist</title>
 </head>
 <body>
-    <div id="root">
-        <!-- 使用is属性解决模板标签出现bug的情况 -->
-        <table>
-            <tbody>
-                <tr is="row"></tr>
-                <tr is="row"></tr>
-                <tr is="row"></tr>
-            </tbody>
-        </table>
-    </div>
-    <script>
-        // 子组件中data必须是一个函数,不同于根组件
-        Vue.component('row', {
-            data: function() {
-                return {
-                    content: "hello"
-                }
-            },
-            template: "<tr><td>{{ content }}</td></tr>"
-        })
-        
-        var vm = new Vue({
-            el: "#root"
-        })
-    </script>
-    <!-- 有些复杂情况还必须操作dom,可以通过ref,这是dom元素 -->
     <div id="app">
-        <div 
-            ref="hello"
-            @click="handleDivClick"
-        >
-            hello world
-        </div>
+        <input type="text" v-model="inputValue" />
+        <button @click="handleBtn">提交</button>
+        <ul>
+            <todo-list 
+                :content="item" 
+                :index="index" 
+                v-for="(item, index) in list" 
+                @delete="handleItemClick">
+            </todo-list>
+        </ul>
     </div>
     <script>
-        var vm = new Vue({
-            el: "#app",
+        // v-on:click 简写成@click  v-bind:index简写成 :index
+        // 点击子组件使用$emit向外触发delete事件,父组件去监听 
+        var TodoList = {
+            props: ['content', 'index'],
+            template: "<li @click='handleItemClick'>{{ content }}</li>",
             methods: {
-                handleDivClick: function() {
-                    console.log(this.$refs.hello.innerHTML)
+                handleItemClick: function() {
+                    this.$emit("delete", this.index);
                 }
             }
-        })
-    </script>
-    <!-- 子组件使用ref,通过this.$refs.one获取的是子组件的引用 -->
-    <div id="app1">
-        <counter ref="one" @change="handleChange"></counter>
-        <counter ref="two" @change="handleChange"></counter>
-        <div>{{ total }}</div>
-    </div>
-    <script>
-        Vue.component('counter', {
-            template: "<div @click='handleClick'>{{ number }}</div>",
-            data: function() {
-                return {
-                    number: 0
-                }
+        }
+
+        var app = new Vue({
+            el: '#app',
+            components: {
+                'todo-list': TodoList
             },
-            methods: {
-                handleClick: function() {
-                    this.number ++;
-                    this.$emit('change')
-                }
-            }
-        })
-        var vm = new Vue({
-            el: "#app1",
             data: {
-                total: 0
+                inputValue: '',
+                list: []
             },
             methods: {
-                handleChange: function() {
-                    this.total = this.$refs.one.number + this.$refs.two.number
+                handleBtn: function() {
+                    this.list.push(this.inputValue);
+                    this.inputValue = '';
+                },
+                handleItemClick: function(index) {
+                    this.list.splice(index, 1);
                 }
             }
         })

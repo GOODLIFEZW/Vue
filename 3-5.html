@@ -1,0 +1,83 @@
+<!-- Vue中的样式绑定 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue中的样式绑定</title>
+    <script src="./vue.js"></script>
+    <style>
+        .active {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <!-- 第一种 -->
+    <div id="app"
+        @click="handleDivClick"
+        :class="{active: isActive}"
+    >
+        hello world
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                isActive: false
+            },
+            methods: {
+                handleDivClick: function() {
+                    this.isActive = !this.isActive
+                }
+            }
+        })
+    </script>
+    <!-- 数组的话就等于里面的内容 -->
+    <!-- 第二种 -->
+    <div id="app1"
+        @click="handleDivClick"
+        :class="[active, active1]"
+    >
+        hello world1
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#app1",
+            data: {
+                active: "",
+                active1: "active1"
+            },
+            methods: {
+                handleDivClick: function() {
+                    this.active = this.active === "active" ? "" : "active" 
+                }
+            }
+        })
+    </script>
+    <!-- 第三种 -->
+    <div id="app2"
+        :style="styleObj"
+        @click="handleDivClick"
+    >
+        hello world2
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#app2",
+            data: {
+                styleObj: {
+                    color: "black"
+                }
+            },
+            methods: {
+                handleDivClick: function() {
+                    this.styleObj.color = this.styleObj.color === "black" ? "red" : "black"
+                }
+            }
+        })
+    </script>
+</body>
+</html>

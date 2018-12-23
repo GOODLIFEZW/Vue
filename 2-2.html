@@ -1,38 +1,33 @@
-<!-- 条件渲染 -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>条件渲染</title>
     <script src="./vue.js"></script>
+    <title>todolist</title>
 </head>
 <body>
-    <!-- 不同的是带有 v-show 的元素始终会被渲染并保留在 DOM 中。v-show 只是简单地切换元素的 CSS 属性 display。 -->
+    <!-- v-model实现数据双向绑定 -->
     <div id="app">
-        <!-- if/else要连在一起 -->
-        <div v-if="show === 'a'">a</div>
-        <div v-else-if="show === 'b'">b</div>
-        <div v-else>other</div>
-        <div v-show="show">v-show</div>
-        
-        <div>
-            <!-- 如果不加key会复用input -->
-            <div v-if="show">
-                用户名: <input key="username" />
-            </div>
-            <div v-else>
-                地址: <input key="adress" />
-            </div>
-        </div>
+        <input type="text" v-model="inputValue" />
+        <button v-on:click="handleBtn">提交</button>
+        <ul>
+            <li v-for="item in list">{{ item }}</li>
+        </ul>
     </div>
     <script>
-        var vm = new Vue({
-            el: "#app",
+        var app = new Vue({
+            el: '#app',
             data: {
-                show: false
+                inputValue: '',
+                list: ['第一部分', '第二部分']
+            },
+            methods: {
+                handleBtn: function() {
+                    this.list.push(this.inputValue)
+                    this.inputValue = ''
+                }
             }
         })
     </script>

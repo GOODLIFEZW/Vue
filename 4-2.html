@@ -11,7 +11,7 @@
 </head>
 <body>
     <div id="app">
-        <!-- 父组件向子组件传值，:count是数字，不加冒号传过去的是string类型 -->
+        <!-- 父组件向子组件传值，:count是数字，不加冒号传过去的是string类型也可以是对象 -->
         <counter-a :count="0" @change="handleChange"></counter-a>
         <counter-a :count="1" @change="handleChange"></counter-a>
         <div>{{ total }}</div>
