@@ -1,4 +1,4 @@
-<!-- Vue中CSS动画原理 -->
+<!-- 同时使用过渡和动画 -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,21 +6,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Vue中动画原理</title>
+    <title>同时使用过渡和动画</title>
     <script src="./vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="./animate.css">
     <style>
-        .fade-enter-active, .fade-leave-active {
-            transition: opacity 3s;
-        }
         .fade-enter, .fade-leave-to {
             opacity: 0;
+        }
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity 3s;
         }
     </style>
 </head>
 <body>
     <div id="root">
-        <!-- transition过渡动画(不加name属性css默认就是v-，而不是fade-) -->
-        <transition name="fade">
+        <!-- 使用appear和appear-active-class第一次显示也会有动画 -->
+        <!-- type="transition"指定已transition动画时长为准 3s
+        :duration="{enter: 5000, leave: 10000}" 自定义动画时长 -->
+        <transition 
+            type="transition" 
+            name="fade"
+            appear
+            enter-active-class="animated tada fade-enter-active"
+            leave-active-class="animated bounceOutRight fade-leave-active"
+            appear-active-class="animated tada"
+        >
             <div v-if="show">hello world</div>
         </transition>
         <button @click="handleClick">change</button>
