@@ -1,0 +1,61 @@
+<!-- Vue中JS动画与Velocity.js -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue中JS动画与Velocity.js</title>
+    <script src="./vue.js"></script>
+    <script src="./velocity.js"></script>
+</head>
+<body>
+    <div id="root">
+        <!-- 使用vue中js钩子 -->
+        <transition 
+            name="fade"
+            @before-enter="handleBeforeEnter"
+            @enter="handleEnter"
+            @after-enter="handleAfterEnter"
+        >
+            <div v-if="show">hello world</div>
+        </transition>
+        <button @click="handleClick">change</button>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#root',
+            data: {
+                show: true
+            },
+            methods: {
+                handleClick: function() {
+                    this.show = !this.show
+                },
+                handleBeforeEnter: function(el) { // el就是动画包裹的这个标签
+                    // el.style.color = 'red'
+                    el.style.opacity = 0;   
+                },
+                // 函数执行完要调用done回调函数，done执行完vue会触发一个叫after-enter事件
+                handleEnter: function(el, done) {
+                    // =>是es6箭头函数，没有参数前面要加()
+                    // setTimeout(() => {
+                    //     el.style.color = 'green'
+                    // }, 2000)
+
+                    // setTimeout(() => {
+                    //     done()
+                    // }, 4000
+                    // )
+                    Velocity(el, {opacity: 1}, {duration: 1000, complete: done})  // 动画透明度从0到1耗时1s
+                },
+                handleAfterEnter: function(el) {
+                    // el.style.color = 'black'
+                    console.log("动画结束")
+                }
+            }
+        })
+    </script>
+</body>
+</html>
